@@ -19,6 +19,9 @@ pkgdir=${src_dir}/${pkgname}-${pkgver}+dfsg-${pkgrel}
 # unzip uuid-dev cmake swig libaio-dev libssl-dev libncurses5-dev libboost-dev antlr4 pkg-config libx11-dev libpcre3-dev libantlr4-runtime-dev
 # libgtk-3-dev libgtkmm-3.0-dev libsecret-1-dev python-dev libxml2-dev libvsqlitepp-dev libssh-dev unixodbc-dev
 # libzip-dev imagemagick libgdal-dev
+
+# RUN DEPS
+# libproj12
 makedepends=('cmake' 'boost' 'mesa' 'swig' 'java-runtime' 'imagemagick' 'antlr4')
 
 source_urls=("https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-community-${pkgver}-src.tar.gz"
