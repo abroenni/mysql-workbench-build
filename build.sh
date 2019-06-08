@@ -13,7 +13,7 @@ _antlr_version=4.7.2
 src_dir=`pwd`
 build_root=${src_dir}/${build_dir}
 srcdir=${build_root}
-pkgdir=${src_dir}/${pkgname}-${pkgver}+dfsg-${pkgrel}
+pkgdir=${src_dir}/${pkgname}_${pkgver}+dfsg-${pkgrel}
 
 # BUILD DEPS
 # unzip uuid-dev cmake swig libaio-dev libssl-dev libncurses5-dev libboost-dev antlr4 pkg-config libx11-dev libpcre3-dev libantlr4-runtime-dev
@@ -189,8 +189,11 @@ create_deb(){
 	# Setting the correct versions in debian control file
 	sed -i "s/__pkg_version__+dfsg-__pkgrel__/${pkgver}+dfsg-${pkgrel}/g" ${pkgdir}/DEBIAN/control
 
+	# changing the user to root on all files
+	sudo chown -R root:root ${pkgdir}
+
 	echo "Creating DEB file.."
-	dpkg -b ${pkgdir} ${src_dir}/${pkgname}_${pkgver}+dfsg-${pkgrel}_amd64.deb
+	sudo dpkg -b ${pkgdir} ${src_dir}/${pkgname}_${pkgver}+dfsg-${pkgrel}_amd64.deb
 
 	echo "All done."
 }
