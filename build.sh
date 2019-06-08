@@ -13,12 +13,12 @@ _antlr_version=4.7.2
 src_dir=`pwd`
 build_root=${src_dir}/${build_dir}
 srcdir=${build_root}
+pkgdir=${src_dir}/${pkgname}-${pkgver}+dfsg-${pkgrel}
 
 # BUILD DEPS
 # unzip uuid-dev cmake swig libaio-dev libssl-dev libncurses5-dev libboost-dev antlr4 pkg-config libx11-dev libpcre3-dev libantlr4-runtime-dev
-# libgtk-3-dev libgtkmm-3.0-dev libsecret-1-dev python-dev libxml2-dev libvsqlitepp-dev libssh-dev unixodbc-dev 
-# libzip-dev
-# libgdal-dev #maybe?
+# libgtk-3-dev libgtkmm-3.0-dev libsecret-1-dev python-dev libxml2-dev libvsqlitepp-dev libssh-dev unixodbc-dev
+# libzip-dev imagemagick libgdal-dev
 makedepends=('cmake' 'boost' 'mesa' 'swig' 'java-runtime' 'imagemagick' 'antlr4')
 
 source_urls=("https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-community-${pkgver}-src.tar.gz"
@@ -125,23 +125,6 @@ build_connector(){
 	make DESTDIR="${srcdir}/install-bundle/" install
 }
 
-build_gdal(){
-	# Build gdal
-	cd "${srcdir}/gdal-${_gdal_version}"
-	echo "Configure gdal..."
-	./configure \
-		--prefix=/usr \
-		--includedir=/usr/include/gdal \
-		--with-sqlite3 \
-		--with-mysql="${srcdir}/install-bundle/usr/bin/mysql_config" \
-		--with-curl \
-		--without-jasper
-	echo "Build gdal..."
-	make LD_LIBRARY_PATH="${srcdir}/install-bundle/usr/lib/"
-	echo "Install gdal..."
-	make LD_LIBRARY_PATH="${srcdir}/install-bundle/usr/lib/" DESTDIR="${srcdir}/install-bundle/" install
-}
-
 build_workbench(){
 	# Build MySQL Workbench itself with bundled libs
 	mkdir "${srcdir}/mysql-workbench-community-${pkgver}-src-build"
@@ -163,11 +146,50 @@ build_workbench(){
 }
 
 build_all(){
-	build_mysql;
-	build_connector;
-	#build_gdal;
+	#build_mysql;
+	#build_connector;
 	build_workbench;
 
+}
+
+create_deb(){
+	# Create base deb package folder structure
+	echo "Create base deb package folder structure.."
+	mkdir -p ${pkgdir}
+
+	# install bundled libraries
+	for LIBRARY in $(find "${srcdir}/install-bundle/usr/lib/" -type f -regex '.*/lib\(gdal\|mysql\(client\|cppconn\)\)\.so\..*'); do
+		BASENAME="$(basename "${LIBRARY}")"
+		SONAME="$(readelf -d "${LIBRARY}" | grep -Po '(?<=(Library soname: \[)).*(?=\])')"
+		install -D -m0755 "${LIBRARY}" "${pkgdir}"/usr/lib/mysql-workbench/"${BASENAME}"
+		ln -s "${BASENAME}" "${pkgdir}"/usr/lib/mysql-workbench/"${SONAME}"
+	done
+
+	# install bundled mysql and mysqldump
+	install -m0755 "${srcdir}/install-bundle/usr/bin/mysql"{,dump} "${pkgdir}"/usr/lib/mysql-workbench/
+
+	# install MySQL Workbench itself
+	cd "${srcdir}/mysql-workbench-community-${pkgver}-src-build"
+
+	make DESTDIR="${pkgdir}" install
+
+	# icons
+	for SIZE in 16 24 32 48 64 96 128; do
+		# set modify/create for reproducible builds
+		convert -scale ${SIZE} +set date:create +set date:modify \
+			"${srcdir}/mysql-workbench-community-${pkgver}-src/images/icons/MySQLWorkbench-128.png" \
+			"${srcdir}/mysql-workbench.png"
+		install -D -m0644 "${srcdir}/mysql-workbench.png" "${pkgdir}/usr/share/icons/hicolor/${SIZE}x${SIZE}/apps/mysql-workbench.png"
+	done
+
+	cp -r ${src_dir}/DEBIAN ${pkgdir}
+	# Setting the correct versions in debian control file
+	sed -i "s/__pkg_version__+dfsg-__pkgrel__/${pkgver}+dfsg-${pkgrel}/g" ${pkgdir}/DEBIAN/control
+
+	echo "Creating DEB file.."
+	dpkg -b ${pkgdir} ${src_dir}/${pkgname}_${pkgver}+dfsg-${pkgrel}_amd64.deb
+
+	echo "All done."
 }
 
 clean(){
@@ -179,10 +201,11 @@ clean(){
 }
 
 clear
-clean
-setup
+#clean
+#setup
 #get
-unpack
-prepare
-build_all
+#unpack
+#prepare
+#build_all
+create_deb
 exit
