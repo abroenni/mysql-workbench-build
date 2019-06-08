@@ -155,7 +155,7 @@ build_all(){
 
 }
 
-create_deb(){
+prepare_deb(){
 	# Create base deb package folder structure
 	echo "Create base deb package folder structure.."
 	mkdir -p ${pkgdir}
@@ -185,6 +185,8 @@ create_deb(){
 		install -D -m0644 "${srcdir}/mysql-workbench.png" "${pkgdir}/usr/share/icons/hicolor/${SIZE}x${SIZE}/apps/mysql-workbench.png"
 	done
 
+create_deb(){
+
 	cp -r ${src_dir}/DEBIAN ${pkgdir}
 	# Setting the correct versions in debian control file
 	sed -i "s/__pkg_version__+dfsg-__pkgrel__/${pkgver}+dfsg-${pkgrel}/g" ${pkgdir}/DEBIAN/control
@@ -213,5 +215,6 @@ clear
 #unpack
 #prepare
 #build_all
+prepare_deb
 create_deb
 exit
