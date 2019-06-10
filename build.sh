@@ -28,7 +28,6 @@ makedepends=('cmake' 'boost' 'mesa' 'swig' 'java-runtime' 'imagemagick' 'antlr4'
 source_urls=("https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-community-${pkgver}-src.tar.gz"
 	     "https://cdn.mysql.com/Downloads/MySQL-${_mysql_version%.*}/mysql-${_mysql_version}.tar.gz"
 	     "https://cdn.mysql.com/Downloads/Connector-C++/mysql-connector-c++-${_connector_version}-src.tar.gz"
-	     "http://download.osgeo.org/gdal/${_gdal_version}/gdal-${_gdal_version}.tar.xz"
 	     "https://www.antlr.org/download/antlr-${_antlr_version}-complete.jar"
 	     "https://downloads.sourceforge.net/project/boost/boost/${_boost_version}/boost_${_boost_version//./_}.tar.bz2"
 	     "https://salsa.debian.org/debian/mysql-workbench/raw/master/debian/patches/projloc.patch"
