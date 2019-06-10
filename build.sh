@@ -11,6 +11,7 @@ _boost_version=1.69.0
 _antlr_version=4.7.2
 
 src_dir=`pwd`
+debian_dir=${src_dir}/debian
 build_root=${src_dir}/${build_dir}
 srcdir=${build_root}
 pkgdir=${src_dir}/${pkgname}_${pkgver}+dfsg-${pkgrel}
@@ -30,7 +31,6 @@ source_urls=("https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-
 	     "https://cdn.mysql.com/Downloads/Connector-C++/mysql-connector-c++-${_connector_version}-src.tar.gz"
 	     "https://www.antlr.org/download/antlr-${_antlr_version}-complete.jar"
 	     "https://downloads.sourceforge.net/project/boost/boost/${_boost_version}/boost_${_boost_version//./_}.tar.bz2"
-	     "https://salsa.debian.org/debian/mysql-workbench/raw/master/debian/patches/projloc.patch"
    	     "https://git.archlinux.org/svntogit/community.git/plain/trunk/0001-mysql-workbench-no-check-for-updates.patch?h=packages/mysql-workbench"
 	     "https://git.archlinux.org/svntogit/community.git/plain/trunk/0002-disable-unsupported-operating-system-warning.patch?h=packages/mysql-workbench")
 
@@ -46,8 +46,8 @@ get(){
 
 			# Just renaming these patch files
 			cd ${build_root}
-			mv "0001-mysql-workbench-no-check-for-updates.patch?h=packages%2Fmysql-workbench" "0001-mysql-workbench-no-check-for-updates.patch"
-			mv "0002-disable-unsupported-operating-system-warning.patch?h=packages%2Fmysql-workbench" "0002-disable-unsupported-operating-system-warning.patch"
+			mv "0001-mysql-workbench-no-check-for-updates.patch?h=packages%2Fmysql-workbench" "${debian}/patches/0001-mysql-workbench-no-check-for-updates.patch"
+			mv "0002-disable-unsupported-operating-system-warning.patch?h=packages%2Fmysql-workbench" "${debian}/patches/0002-disable-unsupported-operating-system-warning.patch"
 
 
 			echo "Creating build dir backup ...";
@@ -71,17 +71,18 @@ unpack(){
 }
 
 prepare(){
+
 	cd "${build_root}/mysql-workbench-community-${pkgver}-src/"
 
 	# Disable 'Help' -> 'Check for Updates'
 	# Updates are provided via Arch Linux packages
-	patch -Np1 < "${build_root}"/0001-mysql-workbench-no-check-for-updates.patch
+	patch -Np1 < "${debian_dir}/patches/0001-mysql-workbench-no-check-for-updates.patch"
 
 	# disable unsupported operating system warning
-	patch -Np1 < "${build_root}"/0002-disable-unsupported-operating-system-warning.patch
+	patch -Np1 < "${debian_dir}/patches/0002-disable-unsupported-operating-system-warning.patch"
 
-	# patch taken from debian salsa repo to fix ldconfig bug when starting wb as non-root user
-	patch -Np1 < "${build_root}"/projloc.patch
+	# patch taken from debian salsa repo to fix ldconfig bug when starting wb as non-root user. updated.
+	patch -Np1 < "${debian_dir}/patches/projloc.patch"
 
 	# GCC 7.x introduced some new warnings, remove '-Werror' for the build to complete
 	sed -i '/^set/s|-Werror -Wall|-Wall|' CMakeLists.txt
@@ -221,8 +222,8 @@ clean(){
 clear
 clean
 get
-#unpack
-#prepare
+unpack
+prepare
 #build_all
 #prepare_deb
 #create_deb
