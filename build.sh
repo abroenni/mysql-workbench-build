@@ -14,6 +14,7 @@ src_dir=`pwd`
 build_root=${src_dir}/${build_dir}
 srcdir=${build_root}
 pkgdir=${src_dir}/${pkgname}_${pkgver}+dfsg-${pkgrel}
+build_root_backup=${src_dir}/${build_dir}_backup
 
 # BUILD DEPS
 # unzip uuid-dev cmake swig libaio-dev libssl-dev libncurses5-dev libboost-dev antlr4 pkg-config libx11-dev libpcre3-dev libantlr4-runtime-dev
@@ -34,24 +35,29 @@ source_urls=("https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-
    	     "https://git.archlinux.org/svntogit/community.git/plain/trunk/0001-mysql-workbench-no-check-for-updates.patch?h=packages/mysql-workbench"
 	     "https://git.archlinux.org/svntogit/community.git/plain/trunk/0002-disable-unsupported-operating-system-warning.patch?h=packages/mysql-workbench")
 
-get() {
-	mkdir ${build_dir}
-	for url in "${source_urls[@]}"; do
-		echo "Getting $url";
-		wget "${url}" -P ${build_root};
-	done
+get(){
+	if [ ! -d ${build_root} ]; then
+		if [ ! -d ${build_root_backup} ]; then
 
-	mv "0001-mysql-workbench-no-check-for-updates.patch?h=packages%2Fmysql-workbench" "0001-mysql-workbench-no-check-for-updates.patch"
-	mv "0002-disable-unsupported-operating-system-warning.patch?h=packages%2Fmysql-workbench" "0002-disable-unsupported-operating-system-warning.patch"
+			mkdir ${build_root};
+			for url in "${source_urls[@]}"; do
+				echo "Getting $url";
+				wget "${url}" -P ${build_root};
+			done;
 
-}
+			# Just renaming these patch files
+			cd ${build_root}
+			mv "0001-mysql-workbench-no-check-for-updates.patch?h=packages%2Fmysql-workbench" "0001-mysql-workbench-no-check-for-updates.patch"
+			mv "0002-disable-unsupported-operating-system-warning.patch?h=packages%2Fmysql-workbench" "0002-disable-unsupported-operating-system-warning.patch"
 
-setup(){
- cp -r bench-backup/ ${build_dir}
- cd ${build_root}
- mv "0001-mysql-workbench-no-check-for-updates.patch?h=packages%2Fmysql-workbench" "0001-mysql-workbench-no-check-for-updates.patch"
- mv "0002-disable-unsupported-operating-system-warning.patch?h=packages%2Fmysql-workbench" "0002-disable-unsupported-operating-system-warning.patch"
 
+			echo "Creating build dir backup ...";
+			cp -r ${build_root} ${build_root_backup};
+		else
+			echo "Found build dir backup. Restoring build dir..";
+			cp -r ${build_root_backup} ${build_root};
+		fi;
+	fi;
 }
 
 unpack(){
@@ -188,6 +194,7 @@ prepare_deb(){
 			"${srcdir}/mysql-workbench.png"
 		install -D -m0644 "${srcdir}/mysql-workbench.png" "${pkgdir}/usr/share/icons/hicolor/${SIZE}x${SIZE}/apps/mysql-workbench.png"
 	done
+}
 
 create_deb(){
 
@@ -213,12 +220,11 @@ clean(){
 }
 
 clear
-#clean
-#setup
-#get
+clean
+get
 #unpack
 #prepare
 #build_all
-prepare_deb
-create_deb
+#prepare_deb
+#create_deb
 exit
