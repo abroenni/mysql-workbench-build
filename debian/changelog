@@ -1,0 +1,405 @@
+mysql-workbench-community (8.0.16-1debian9) unstable; urgency=medium
+
+  * New release
+
+ -- Andreas Brönnimann <abronnim@our.ecu.edu.au>  Mon, 10 Jun 2019 22:33:00 +0800
+
+mysql-workbench (6.3.10+dfsg-3) unstable; urgency=medium
+
+  * rules: build with "-Wno-error=deprecated-declarations" (Closes: #896577)
+    to fix FTBFS with GDAL 2.3.0.
+    Thanks, Bas Couwenberg.
+  * Vcs URLs to Salsa
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Wed, 06 Jun 2018 17:18:44 +1000
+
+mysql-workbench (6.3.10+dfsg-2) unstable; urgency=medium
+
+  * New patch to fix FTBFS on 32bit architectures.
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Sun, 11 Mar 2018 19:27:04 +1100
+
+mysql-workbench (6.3.10+dfsg-1) unstable; urgency=medium
+
+  * New upstream release.
+    + fixes CVE-2017-3469 (Closes: #861487)
+  * Removed non-free "antlr3convertutf.c".
+  * Build-Depends:
+    - libgtkmm-2.4-dev
+    + libgtkmm-3.0-dev
+    + libgtk-3-dev
+    + python-paramiko
+    + antlr3
+  * Standards-Version: 4.1.3.
+  * debhelper & compat to version 11.
+  * rules: removed calls to "dpkg-parsechangelog".
+  * watch: added "repacksuffix".
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Mon, 05 Mar 2018 01:01:14 +1100
+
+mysql-workbench (6.3.8+dfsg-1) unstable; urgency=medium
+
+  * New upstream release [October 2016].
+  * Removed obsolete "gtk.patch".
+  * Added new "projloc.patch".
+  * debhelper/compat to version 10.
+  * Recommends: mysql-client --> default-mysql-client.
+  * Standards-Version: 3.9.8;
+  * Do not install menu and .xpm files;
+    removed "imagemagick" from Build-Depends.
+  * Build-Depends += "dh-python"; invoke dh_python2 with "--no-ext-rename".
+  * Build-Depends: strict libmysqlcppconn-dev versioning (Closes: #844381).
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Sat, 19 Nov 2016 08:09:03 +1100
+
+mysql-workbench (6.3.6+dfsg-1) unstable; urgency=medium
+
+  * New upstream release [December 2015].
+    + fixed "Unhandled exception on Data Export" (Closes: #822413).
+    + fixed "don't open files with same name but difference locations"
+      (Closes: #804774).
+  * Switch to "default-libmysqlclient-dev"
+    (Closes: #840786, #841584, #843457, #843887).
+  * Modernised Vcs URLs; copyright format URL to HTTPS.
+  * Removed traces of -dbg package.
+  * New patches:
+    + gtk.patch (Closes: #839356).
+    + mariadb-build.patch
+    + mariadb-version.patch
+    + no-MYSQL_TYPE_JSON.patch
+  * Removed obsolete "gcc5.patch".
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Mon, 14 Nov 2016 01:12:33 +1100
+
+mysql-workbench (6.3.4+dfsg-3) unstable; urgency=medium
+
+  [ Peter Michael Green <plugwash@raspbian.org> ]
+  * Fix build failure on architectures where plain char is unsigned
+    (Closes: #803618).
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Sun, 01 Nov 2015 14:10:13 +1100
+
+mysql-workbench (6.3.4+dfsg-2) unstable; urgency=medium
+
+  * New upstream "gcc5.patch" from Marcin Szalowicz (fixes FTBFS).
+  * rules: "DEB_CPPFLAGS_MAINT_APPEND= -std=c++11" (fixes FTBFS).
+  * Re-build for "(lib)gdal" transition (Closes: #802169).
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Sat, 24 Oct 2015 05:55:58 +1100
+
+mysql-workbench (6.3.4+dfsg-1) unstable; urgency=low
+
+  * New upstream release [June 2015] (Closes: #784729).
+  * Upstream tarball signature verification.
+  * get-orig-source: reproducible sort.
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Wed, 17 Jun 2015 21:34:03 +1000
+
+mysql-workbench (6.3.3+dfsg-1) unstable; urgency=low
+
+  * New upstream release [April 2015].
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Mon, 27 Apr 2015 15:15:03 +1000
+
+mysql-workbench (6.2.3+dfsg-7) unstable; urgency=low
+
+  * Demoted "virtual-mysql-client" to Recommends; added "mysql-client"
+    as first alternative: "mysql-client | virtual-mysql-client".
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Sun, 02 Nov 2014 08:07:54 +1100
+
+mysql-workbench (6.2.3+dfsg-6) unstable; urgency=high
+
+  * New "libglib2.42.patch" with adaptations for compatibility with
+    libglib_2.42 (Closes: #763356).
+    Thanks, Marcin Szalowicz.
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Thu, 16 Oct 2014 19:37:13 +1100
+
+mysql-workbench (6.2.3+dfsg-5) unstable; urgency=medium
+
+  * Another correction to "build.patch".
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Thu, 16 Oct 2014 04:46:34 +1100
+
+mysql-workbench (6.2.3+dfsg-4) unstable; urgency=medium
+
+  * Updated "build.patch" in yet another attempt to fix FTBFS.
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Tue, 14 Oct 2014 12:09:03 +1100
+
+mysql-workbench (6.2.3+dfsg-3) unstable; urgency=medium
+
+  * Extended "build.patch" to fix more cases of FTBFS.
+    Thanks, Marcin Szalowicz.
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Tue, 14 Oct 2014 04:34:17 +1100
+
+mysql-workbench (6.2.3+dfsg-2) unstable; urgency=medium
+
+  * New "build.patch" to fix FTBFS on multiple architectures.
+    Thanks, Alfredo Kojima.
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Thu, 09 Oct 2014 19:30:12 +1100
+
+mysql-workbench (6.2.3+dfsg-1) unstable; urgency=medium
+
+  * New upstream release [September 2014].
+  * Build-Depends:
+    + libgdal-dev
+    + dh-autoreconf
+  * Use autoreconf on bundled ANTLR; added "antlr.patch".
+  * New "paramiko.patch" to fix SSH tunnels connectivity (Closes: #763971).
+  * Standards-Version: 3.9.6.
+  * get-orig-source: minor update to list of files to clean-up.
+  * Minor dh_clean update.
+  * Minor "debian/watch" update.
+  * Minor copyright corrections.
+  * Dropped "mysql-workbench-help": upstream no longer provides offline
+    help files.
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Tue, 07 Oct 2014 10:17:53 +1100
+
+mysql-workbench (6.1.7+dfsg-1) unstable; urgency=low
+
+  * New upstream release [June 2014].
+  * Added "debian/gbp.conf".
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Thu, 03 Jul 2014 23:41:54 +1000
+
+mysql-workbench (6.1.6+dfsg-1) unstable; urgency=low
+
+  * New upstream release [May 2014].
+  * Dropped "prtcl.patch".
+  * "debian/clean": better clean-up.
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Sat, 31 May 2014 12:03:58 +1000
+
+mysql-workbench (6.1.4+dfsg-2) unstable; urgency=low
+
+  * New patch to fix FTBFS on non-Linux architectures.
+  * Depend on "virtual-mysql-client" (Closes: #743441).
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Sun, 06 Apr 2014 13:54:32 +1000
+
+mysql-workbench (6.1.4+dfsg-1) unstable; urgency=low
+
+  * New upstream release [March 2014].
+    + fixed crash on add table to empty EER diagram (Closes: #726501).
+  * Patces dropped (applied-upstream):
+    - doclib.patch
+    - 732316-fix-ftbfs.patch
+  * Refreshed "pythonlibs.patch".
+  * Added patch to set relative RPATH to `wbcopytables` (Closes: #739515).
+  * Depends: "mariadb-client" added as alternative to "mysql-client".
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Wed, 02 Apr 2014 17:04:09 +1100
+
+mysql-workbench (6.0.8+dfsg-2) unstable; urgency=low
+
+  * New patch to fix FTBFS "ft2build.h: No such file or directory"
+    (Closes: #732316). Thanks, Roland Stigge.
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Tue, 17 Dec 2013 07:53:17 +1100
+
+mysql-workbench (6.0.8+dfsg-1) unstable; urgency=low
+
+  * New upstream release [November 2013].
+    - dropped obsolete "path_to_ifconfig.patch" and "fix-install.patch".
+  * README.Debian: added note about online help availability.
+  * Standards updated to 3.9.5.
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Sat, 09 Nov 2013 03:03:27 +1100
+
+mysql-workbench (6.0.7+dfsg1-1) unstable; urgency=low
+
+  * Upload to unstable.
+  * Dropped non-DFSG compliant help files, see "README.Debian".
+    + added "mysql-workbench-help" source package template and
+      instructions how to manually build binary help package.
+  * "debian/watch": monitor GPL-compliant -nodocs-src tars.
+  * Added "doclib.patch" to force "doclib" module installation.
+  * get-orig-source: remove help files from upstream tarball.
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Sat, 14 Sep 2013 03:59:41 +1000
+
+mysql-workbench (6.0.7+dfsg-1) experimental; urgency=low
+
+  * New upstream release [September 2013].
+  * Removed obsolete "libboost1.53-dev" from Build-Depends.
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Tue, 10 Sep 2013 00:00:55 +1000
+
+mysql-workbench (6.0.6+dfsg-1) experimental; urgency=low
+
+  * New upstream release [August 2013]
+    https://dev.mysql.com/doc/relnotes/workbench/en/wb-news-6-0-2.html
+    https://dev.mysql.com/doc/relnotes/workbench/en/wb-news-6-0-3.html
+    https://dev.mysql.com/doc/relnotes/workbench/en/wb-news-6-0-4.html
+    https://dev.mysql.com/doc/relnotes/workbench/en/wb-news-6-0-5.html
+    https://dev.mysql.com/doc/relnotes/workbench/en/wb-news-6-0-6.html
+  * Packaging changes to accommodate switch of upstream build system to
+    cmake; minor improvements.
+  * Removed symlink to "libmysqlcppconn".
+  * Removed "unbundle_*" and "launcher" patches (no longer needed).
+  * New "fix-install.patch" to fix trivial FTBFS.
+  * Build-Depends:
+    - dh-autoreconf
+    + cmake
+    + autoconf
+    + automake
+    + libtool
+    + libvsqlitepp-dev (NEW, used to be bundled with mysql-workbench)
+  * Reference implementation of get-orig-source and better clean-up.
+  * Updated/corrected man page and introduced target for semi-automated
+    invocation of `help2man`.
+  * Updated orig.tar name in "debian/watch".
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Sun, 25 Aug 2013 06:32:04 +1000
+
+mysql-workbench (5.2.47+dfsg-3) unstable; urgency=low
+
+  * Removed obsolete "libboost1.53-dev" from Build-Depends
+    (Closes: #721503).
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Mon, 02 Sep 2013 00:28:27 +1000
+
+mysql-workbench (5.2.47+dfsg-2) unstable; urgency=low
+
+  * Use `readlink` to find libmysqlcppconn library (Closes: #711687).
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Sun, 09 Jun 2013 04:46:02 +1000
+
+mysql-workbench (5.2.47+dfsg-1) unstable; urgency=low
+
+  * Upload to unstable.
+  * New patch to get libpython flags using `python-config`
+    (Closes: #710627).
+  * Build-Depends:
+    - python-all-dev
+    + python-dev (provides `python-config`)
+    - libboost-dev
+    + libboost1.53-dev | libboost-dev (needed to avoid FTBFS since
+      libmysqlcppconn depends on boost1.53 which conflicts with older
+      boost that is pulled by libboost-dev).
+  * rules: added "-v" to `mv` command (more build-time verbosity).
+  * rules: get-orig-source improvements.
+  * Dropped unused lintian-overrides
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Wed, 05 Jun 2013 09:13:55 +1000
+
+mysql-workbench (5.2.47+dfsg-1~exp0) experimental; urgency=low
+
+  * New upstream release [February 2013].
+  * Depends on "python-pyodbc (>= 2.1.8)" that is needed for ODBC
+    database migration to MySQL. Thanks, Laurent Bigonville
+    (Closes: #698969).
+  * Build-Depends: libpng12-dev --> libpng-dev (transition).
+  * Standards to 3.9.4.
+  * Updated my email address.
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Sat, 30 Mar 2013 01:10:38 +1100
+
+mysql-workbench (5.2.45+dfsg-1~exp0) experimental; urgency=low
+
+  * New upstream release [December 2012].
+  * Added lintian-override for "broken symlink" to "libmysqlcppconn.so.6".
+
+ -- Dmitry Smirnov <onlyjob@member.fsf.org>  Sun, 06 Jan 2013 13:41:56 +1100
+
+mysql-workbench (5.2.44+dfsg-1~exp1) experimental; urgency=low
+
+  * Build with "unixodbc" instead of "iodbc" (Closes: #690327).
+
+ -- Dmitry Smirnov <onlyjob@member.fsf.org>  Sat, 13 Oct 2012 10:11:06 +1100
+
+mysql-workbench (5.2.44+dfsg-1~exp0) experimental; urgency=low
+
+  * New upstream release [September 2012]
+  * Build without PIE hardening to avoid crash on autocompletion
+    (Closes: #689497).
+  * d/rules to make -dbg package if uncommented in d/control.
+
+ -- Dmitry Smirnov <onlyjob@member.fsf.org>  Wed, 03 Oct 2012 21:08:50 +1000
+
+mysql-workbench (5.2.43+dfsg-1~exp0) experimental; urgency=low
+
+  * New upstream release [September 2012]
+    (Closes: #682691) "Freeze on quit application".
+  * Build-Depends:
+    + added "libiodbc2-dev".
+    + added "libtinyxml-dev (>= 2.6.2)"
+      to avoid FTBFS with older versions (Closes: #675336).
+    + added "libmysqlcppconn-dev (>= 1.1.1)"
+      thanks to availability of new libmysqlcppconn
+      the bundled version is no longer used.
+  * debian/watch is updated to reflect mirror changes.
+  * xz compression for binary packages.
+  * lintian-overrides for hardening false-positives.
+  * added TODO.Debian: unbundle antlr when possible.
+  * added README.Debian with note about outdated ChangeLog.
+  * dropped obsolete patches [automake-1.11.2,disable_scintillaNET]
+  * updated remaining patches for new release.
+  * debian/rules:
+    + get-orig-source to remove cppconn from dfsg-repackaged archive.
+    + --as-needed to minimise needless linking (backport-friendly).
+  * updated man page: argument list refreshed and alphabetised.
+
+ -- Dmitry Smirnov <onlyjob@member.fsf.org>  Thu, 31 May 2012 23:49:30 +1000
+
+mysql-workbench (5.2.40+dfsg-2) unstable; urgency=medium
+
+  * Build-Depends on libtinyxml-dev (>= 2.6.2)
+    to avoid FTBFS with older versions (Closes: #675336)
+  * new patch to fix freeze on application exit (Closes: #682691).
+  * debian/watch update to reflect mirror changes.
+  * debian/rules to gracefully handle stripping if -dbg
+    package is (un-)commented in debian/control.
+  * xz compression for binary packages.
+
+ -- Dmitry Smirnov <onlyjob@member.fsf.org>  Wed, 10 Oct 2012 00:54:13 +1100
+
+mysql-workbench (5.2.40+dfsg-1) unstable; urgency=low
+
+  * New upstream release [May 2012]
+  * source compression to .xz
+  * dropped glib-single-include.patch (applied upstream).
+  * dropped '©' characters from debian/copyright.
+  * dropped copyright.hints file.
+  * native server administration profile renamed to "Debian".
+    (Closes: #671050)
+  * dropped unnecessary 'python-all' from Depends (Closes: #674768)
+  * limit parallel build to 4 due to FTBFS with 8 CPUs.
+
+  [ Mateusz Kijowski ]
+  * debian/copyright cleanup
+
+ -- Dmitry Smirnov <onlyjob@member.fsf.org>  Thu, 17 May 2012 22:59:56 +1000
+
+mysql-workbench (5.2.38+dfsg-3) unstable; urgency=low
+
+  * native server administration profile (Closes: #667714 I:"Creating new
+    server instance profile fails...")
+  * patch to fix ifconfig invocation
+  * d-rules:
+    + better CPU number detection
+    + build with all but 'bindnow' hardening
+
+ -- Dmitry Smirnov <onlyjob@member.fsf.org>  Fri, 06 Apr 2012 23:00:35 +1000
+
+mysql-workbench (5.2.38+dfsg-2) unstable; urgency=low
+
+  * patch to fix FTBFS with glib 2.32
+    (Closes: #665584 I:"individual glib headers no longer supported")
+  * d-rules: get correct number of CPUs for parallel build on Linux
+    (Closes: #665862 W:"Build process not is paralleled on some Linux
+     architectures")
+
+ -- Dmitry Smirnov <onlyjob@member.fsf.org>  Tue, 27 Mar 2012 21:57:45 +1100
+
+mysql-workbench (5.2.38+dfsg-1) unstable; urgency=low
+
+  * first Debian release (Closes: #604174 ITP)
+    Thanks to David Paleino
+
+ -- Dmitry Smirnov <onlyjob@member.fsf.org>  Thu, 01 Mar 2012 21:57:30 +1100
