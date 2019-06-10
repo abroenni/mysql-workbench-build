@@ -203,11 +203,7 @@ create_deb(){
 	cp -r ${debian_dir} ${pkgdir}
 
 	# Setting the correct versions in debian control file
-	sed -i "s/__pkg_version__+dfsg-__pkgrel__/${pkgver}+dfsg-${pkgrel}/g" ${debian_dir}/control
-
-        # BUG patches folder prevents deb installation, so we delete it for now
-        cd ${pkgdir}/DEBIAN
-        rm -r patches
+	sed -i "s/__pkg_version__+dfsg-__pkgrel__/${pkgver}+dfsg-${pkgrel}/g" ${pkgdir}/DEBIAN/control
 
 	# changing the user to root on all files
 	sudo chown -R root:root ${pkgdir}

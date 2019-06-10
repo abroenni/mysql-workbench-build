@@ -1,5 +1,5 @@
 Package: mysql-workbench
-Version: 8.0.16+dfsg-2
+Version: __pkg_version__+dfsg-__pkgrel__
 Architecture: amd64
 Maintainer: Dmitry Smirnov <onlyjob@debian.org>
 Changed-By: Andreas Broennimann <coolhammer@gmx.net>
