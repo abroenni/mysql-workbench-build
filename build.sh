@@ -3,7 +3,7 @@
 build_dir=mysql-bench
 pkgname=mysql-workbench
 pkgver=8.0.16
-pkgrel=1
+pkgrel=2
 _mysql_version=${pkgver}
 _connector_version=${pkgver}
 _gdal_version=2.4.1
@@ -40,15 +40,15 @@ get(){
 		if [ ! -d ${build_root_backup} ]; then
 
 			mkdir ${build_root};
+			echo "Getting sources";
 			for url in "${source_urls[@]}"; do
-				echo "Getting $url";
-				wget "${url}" -P ${build_root};
+				wget -q --show-progress "${url}" -P ${build_root};
 			done;
 
 			# Just renaming these patch files
 			cd ${build_root}
-			mv "0001-mysql-workbench-no-check-for-updates.patch?h=packages%2Fmysql-workbench" "${debian_dir}/patches/0001-mysql-workbench-no-check-for-updates.patch"
-			mv "0002-disable-unsupported-operating-system-warning.patch?h=packages%2Fmysql-workbench" "${debian_dir}/patches/0002-disable-unsupported-operating-system-warning.patch"
+			cp "0001-mysql-workbench-no-check-for-updates.patch?h=packages%2Fmysql-workbench" "${debian_dir}/patches/0001-mysql-workbench-no-check-for-updates.patch"
+			cp "0002-disable-unsupported-operating-system-warning.patch?h=packages%2Fmysql-workbench" "${debian_dir}/patches/0002-disable-unsupported-operating-system-warning.patch"
 
 
 			echo "Creating build dir backup ...";
@@ -98,7 +98,7 @@ prepare(){
 	sed -i "/target_link_libraries/s|\\$|-L${srcdir}/install-bundle/usr/lib/ \\$|" backend/wbpublic/CMakeLists.txt
 
 	# change the ANTLR Version to Debian Testings current version
-	sed -i 's/antlr-4.7.1-complete.jar/antlr-${_antlr_version}-complete.jar/g' CMakeLists.txt
+	sed -i "s/antlr-4.7.1-complete.jar/antlr-${_antlr_version}-complete.jar/g" CMakeLists.txt
 
 }
 
@@ -160,8 +160,8 @@ build_workbench(){
 }
 
 build_all(){
-	#build_mysql;
-	#build_connector;
+	build_mysql;
+	build_connector;
 	build_workbench;
 
 }
@@ -213,10 +213,15 @@ create_deb(){
 }
 
 clean(){
-	cd ${src_dir}
-	if [ -d ${build_dir} ]; then
+
+	if [ -d ${build_root} ]; then
 		echo "Cleaning up old stuff..."
-		rm -r ${build_dir};
+		rm -r ${build_root};
+	fi
+
+	if [ -d ${pkgdir} ]; then
+		echo "Removing old packaging dir.."
+		sudo rm -r ${pkgdir};
 	fi
 }
 
@@ -225,7 +230,7 @@ clean
 get
 unpack
 prepare
-#build_all
-#prepare_deb
-#create_deb
+build_all
+prepare_deb
+create_deb
 exit
