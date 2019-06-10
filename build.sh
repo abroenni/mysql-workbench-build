@@ -11,7 +11,7 @@ _boost_version=1.69.0
 _antlr_version=4.7.2
 
 src_dir=`pwd`
-debian_dir=${src_dir}/debian
+debian_dir=${src_dir}/DEBIAN
 build_root=${src_dir}/${build_dir}
 srcdir=${build_root}
 pkgdir=${src_dir}/${pkgname}_${pkgver}+dfsg-${pkgrel}
@@ -199,9 +199,15 @@ prepare_deb(){
 
 create_deb(){
 
-	cp -r ${src_dir}/DEBIAN ${pkgdir}
+	#Copying DEBIAN folder into packaging folder
+	cp -r ${debian_dir} ${pkgdir}
+
 	# Setting the correct versions in debian control file
-	sed -i "s/__pkg_version__+dfsg-__pkgrel__/${pkgver}+dfsg-${pkgrel}/g" ${pkgdir}/DEBIAN/control
+	sed -i "s/__pkg_version__+dfsg-__pkgrel__/${pkgver}+dfsg-${pkgrel}/g" ${debian_dir}/control
+
+        # BUG patches folder prevents deb installation, so we delete it for now
+        cd ${pkgdir}/DEBIAN
+        rm -r patches
 
 	# changing the user to root on all files
 	sudo chown -R root:root ${pkgdir}
@@ -226,11 +232,11 @@ clean(){
 }
 
 clear
-clean
-get
-unpack
-prepare
-build_all
+#clean
+#get
+#unpack
+#prepare
+#build_all
 prepare_deb
 create_deb
 exit
