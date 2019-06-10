@@ -30,6 +30,7 @@ source_urls=("https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-
 	     "http://download.osgeo.org/gdal/${_gdal_version}/gdal-${_gdal_version}.tar.xz"
 	     "https://www.antlr.org/download/antlr-${_antlr_version}-complete.jar"
 	     "https://downloads.sourceforge.net/project/boost/boost/${_boost_version}/boost_${_boost_version//./_}.tar.bz2"
+	     "https://salsa.debian.org/debian/mysql-workbench/raw/master/debian/patches/projloc.patch"
    	     "https://git.archlinux.org/svntogit/community.git/plain/trunk/0001-mysql-workbench-no-check-for-updates.patch?h=packages/mysql-workbench"
 	     "https://git.archlinux.org/svntogit/community.git/plain/trunk/0002-disable-unsupported-operating-system-warning.patch?h=packages/mysql-workbench")
 
@@ -73,6 +74,9 @@ prepare(){
 
 	# disable unsupported operating system warning
 	patch -Np1 < "${build_root}"/0002-disable-unsupported-operating-system-warning.patch
+
+	# patch taken from debian salsa repo to fix ldconfig bug when starting wb as non-root user
+	patch -Np1 < "${build_root}"/projloc.patch
 
 	# GCC 7.x introduced some new warnings, remove '-Werror' for the build to complete
 	sed -i '/^set/s|-Werror -Wall|-Wall|' CMakeLists.txt
