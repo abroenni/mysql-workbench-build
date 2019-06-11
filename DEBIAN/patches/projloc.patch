@@ -11,7 +11,7 @@ Description: updated improve/fix search for "libproj.so".
  if [[ -z "${PROJSO}" ]]; then
    # Set the PROJSO env variable so gdal can find proj cause it's using dlopen instead ld 
 -  TMPLOC=`ldconfig -p | grep libproj\.so | awk '{printf $4;exit;}'`
-+  TMPLOC="$(ldd /usr/lib/mysql-workbench/mysql-workbench-bin | awk '/libproj.so/{print $3}')"
++  TMPLOC="$(ldd /usr/bin/mysql-workbench-bin | awk '/libproj.so/{print $3}')"
 +  [ -n "${TMPLOC}" ] || TMPLOC=`/sbin/ldconfig -p | grep libproj | awk '{printf $4;exit;}'`
    if [[ -f "$TMPLOC" ]]; then
      echo "Found $TMPLOC"
