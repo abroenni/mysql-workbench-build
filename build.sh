@@ -35,6 +35,13 @@ source_urls=(
    	     "https://git.archlinux.org/svntogit/community.git/plain/trunk/0001-mysql-workbench-no-check-for-updates.patch?h=packages/mysql-workbench"
 	     "https://git.archlinux.org/svntogit/community.git/plain/trunk/0002-disable-unsupported-operating-system-warning.patch?h=packages/mysql-workbench")
 
+root_check(){
+	if ! [ $(id -u) = 0 ]; then
+  		 echo "This build script must be run as root!"
+   	exit 1
+fi
+}
+
 get(){
 	if [ ! -d ${build_root} ]; then
 		if [ ! -d ${build_root_backup} ]; then
@@ -207,10 +214,10 @@ create_deb(){
 	sed -i "s/__pkg_version__+dfsg-__pkgrel__/${pkgver}+dfsg-${pkgrel}/g" ${pkgdir}/DEBIAN/control
 
 	# changing the user to root on all files
-	sudo chown -R root:root ${pkgdir}
+	chown -R root:root ${pkgdir}
 
 	echo "Creating DEB file.."
-	sudo dpkg -b ${pkgdir} ${src_dir}/${pkgname}_${pkgver}+dfsg-${pkgrel}_amd64.deb
+	dpkg -b ${pkgdir} ${src_dir}/${pkgname}_${pkgver}+dfsg-${pkgrel}_amd64.deb
 
 	echo "All done."
 }
@@ -224,17 +231,18 @@ clean(){
 
 	if [ -d ${pkgdir} ]; then
 		echo "Removing old packaging dir.."
-		sudo rm -r ${pkgdir};
+		rm -r ${pkgdir};
 	fi
 
 	if [ -f ${src_dir}/${pkgname}_${pkgver}+dfsg-${pkgrel}_amd64.deb ]; then
                 echo "Removing old DEB Package..."
-                sudo rm ${src_dir}/${pkgname}_${pkgver}+dfsg-${pkgrel}_amd64.deb;
+                rm ${src_dir}/${pkgname}_${pkgver}+dfsg-${pkgrel}_amd64.deb;
         fi
 
 }
 
 clear
+check_root
 clean
 get
 unpack
