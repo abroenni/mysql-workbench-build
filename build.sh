@@ -49,7 +49,7 @@ fi
 }
 
 install_builddep(){
-	dpkg-query -l ${builddeps} > /dev/null || sudo apt install ${builddeps}
+	dpkg-query -l ${builddeps} > /dev/null || apt install ${builddeps}
 }
 
 get(){
