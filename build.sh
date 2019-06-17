@@ -17,6 +17,9 @@ srcdir=${build_root}
 pkgdir=${src_dir}/${pkgname}_${pkgver}+dfsg-${pkgrel}
 build_root_backup=${src_dir}/${build_dir}_backup
 
+# Finding number if cores on system
+NB_CORES=$(grep -c '^processor' /proc/cpuinfo)
+
 # BUILD DEPS
 # unzip uuid-dev cmake swig libaio-dev libssl-dev libncurses5-dev libboost-dev antlr4 pkg-config libx11-dev libpcre3-dev libantlr4-runtime-dev
 # libgtk-3-dev libgtkmm-3.0-dev libsecret-1-dev python-dev libxml2-dev libvsqlitepp-dev libssh-dev unixodbc-dev
@@ -122,7 +125,7 @@ build_mysql(){
 		-DMYSQL_DATADIR=/var/lib/mysql \
 		-DWITH_BOOST="${srcdir}/boost_${_boost_version//./_}"
 	echo "Build mysql..."
-	make
+	make -j$((NB_CORES+1)) -l${NB_CORES}
 	echo "Install mysql..."
 	make DESTDIR="${srcdir}/install-bundle/" install
 }
@@ -142,7 +145,7 @@ build_connector(){
 		-DWITH_BOOST="${srcdir}/boost_${_boost_version//./_}"
 		-DWITH_JDBC=ON
 	echo "Build mysql-connector-c++..."
-	make
+	make -j$((NB_CORES+1)) -l${NB_CORES}
 	echo "Install mysql-connector-c++..."
 	make DESTDIR="${srcdir}/install-bundle/" install
 }
@@ -164,7 +167,7 @@ build_workbench(){
 		-DUSE_UNIXODBC=True \
 		-DUSE_BUNDLED_MYSQLDUMP=1
 	echo "Build mysql-workbench..."
-	make
+	make -j$((NB_CORES+1)) -l${NB_CORES}
 }
 
 build_all(){
