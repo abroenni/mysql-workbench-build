@@ -172,7 +172,7 @@ build_workbench(){
 		-DMySQLCppConn_INCLUDE_DIR="${srcdir}/install-bundle/usr/include/jdbc" \
 		-DWITH_ANTLR_JAR="${srcdir}/antlr-${_antlr_version}-complete.jar" \
 		-DUSE_UNIXODBC=True \
-		-DBoost_DIR="${srcdir}/boost_${_boost_version//./_}" \
+		-DBoost_INCLUDE_DIR="${srcdir}/boost_${_boost_version//./_}" \
 		-DUSE_BUNDLED_MYSQLDUMP=1
 	echo "Build mysql-workbench..."
 	make -j$((NB_CORES+1)) -l${NB_CORES}
