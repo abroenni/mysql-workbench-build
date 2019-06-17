@@ -226,14 +226,20 @@ clean(){
 		echo "Removing old packaging dir.."
 		sudo rm -r ${pkgdir};
 	fi
+
+	if [ -f ${src_dir}/${pkgname}_${pkgver}+dfsg-${pkgrel}_amd64.deb ]; then
+                echo "Removing old DEB Package..."
+                sudo rm ${src_dir}/${pkgname}_${pkgver}+dfsg-${pkgrel}_amd64.deb;
+        fi
+
 }
 
 clear
-#clean
-#get
-#unpack
-#prepare
-#build_all
+clean
+get
+unpack
+prepare
+build_all
 prepare_deb
 create_deb
 exit
