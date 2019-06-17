@@ -142,7 +142,7 @@ build_connector(){
 		-DINSTALL_LIB_DIR=lib \
 		-DWITH_MYSQL="${srcdir}/install-bundle/" \
 		-DMYSQL_CONFIG_EXECUTABLE="${srcdir}/install-bundle/usr/bin/mysql_config" \
-		-DWITH_BOOST="${srcdir}/boost_${_boost_version//./_}"
+		-DWITH_BOOST="${srcdir}/boost_${_boost_version//./_}" \
 		-DWITH_JDBC=ON
 	echo "Build mysql-connector-c++..."
 	make -j$((NB_CORES+1)) -l${NB_CORES}
@@ -216,6 +216,9 @@ create_deb(){
 	# Setting the correct versions in debian control file
 	sed -i "s/__pkg_version__+dfsg-__pkgrel__/${pkgver}+dfsg-${pkgrel}/g" ${pkgdir}/DEBIAN/control
 
+	# deleting the patches folder
+        rm -r ${pkgdir}/DEBIAN/patches
+
 	# changing the user to root on all files
 	chown -R root:root ${pkgdir}
 
@@ -245,12 +248,12 @@ clean(){
 }
 
 clear
-check_root
-clean
-get
-unpack
-prepare
-build_all
+root_check
+#clean
+#get
+#unpack
+#prepare
+#build_all
 prepare_deb
 create_deb
 exit
