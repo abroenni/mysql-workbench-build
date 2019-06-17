@@ -21,13 +21,16 @@ build_root_backup=${src_dir}/${build_dir}_backup
 NB_CORES=$(grep -c '^processor' /proc/cpuinfo)
 
 # BUILD DEPS
-# unzip uuid-dev cmake swig libaio-dev libssl-dev libncurses5-dev libboost-dev antlr4 pkg-config libx11-dev libpcre3-dev libantlr4-runtime-dev
-# libgtk-3-dev libgtkmm-3.0-dev libsecret-1-dev python-dev libxml2-dev libvsqlitepp-dev libssh-dev unixodbc-dev
-# libzip-dev imagemagick libgdal-dev bison doxygen libtirpc-dev libsasl2-dev
+builddeps="build-essential debhelper autoconf autogen cmake unzip uuid-dev swig libaio-dev \
+	libssl-dev libncurses5-dev libboost-dev antlr4 pkg-config libx11-dev libpcre3-dev \
+	libantlr4-runtime-dev libgtk-3-dev libgtkmm-3.0-dev libsecret-1-dev python-dev libxml2-dev \
+        libvsqlitepp-dev libssh-dev unixodbc-dev libzip-dev imagemagick libgdal-dev \
+        bison doxygen libtirpc-dev libsasl2-dev libsqlite3-dev libgl1-mesa-dev xdg-utils libproj-dev \
+	libxml2-utils"
 
 # RUN DEPS
 # libproj12
-makedepends=('cmake' 'boost' 'mesa' 'swig' 'java-runtime' 'imagemagick' 'antlr4')
+#makedepends=('cmake' 'boost' 'mesa' 'swig' 'java-runtime' 'imagemagick' 'antlr4')
 
 source_urls=(
 	     "https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-community-${pkgver}-src.tar.gz"
@@ -43,6 +46,10 @@ root_check(){
   		 echo "This build script must be run as root!"
    	exit 1
 fi
+}
+
+install_builddep(){
+	dpkg-query -l ${builddeps} > /dev/null || sudo apt install ${builddeps}
 }
 
 get(){
@@ -165,6 +172,7 @@ build_workbench(){
 		-DMySQLCppConn_INCLUDE_DIR="${srcdir}/install-bundle/usr/include/jdbc" \
 		-DWITH_ANTLR_JAR="${srcdir}/antlr-${_antlr_version}-complete.jar" \
 		-DUSE_UNIXODBC=True \
+		-DBoost_DIR="${srcdir}/boost_${_boost_version//./_}" \
 		-DUSE_BUNDLED_MYSQLDUMP=1
 	echo "Build mysql-workbench..."
 	make -j$((NB_CORES+1)) -l${NB_CORES}
@@ -249,11 +257,12 @@ clean(){
 
 clear
 root_check
-#clean
-#get
-#unpack
-#prepare
-#build_all
+clean
+install_builddep
+get
+unpack
+prepare
+build_all
 prepare_deb
 create_deb
 exit
