@@ -20,7 +20,7 @@ build_root_backup=${src_dir}/${build_dir}_backup
 # BUILD DEPS
 # unzip uuid-dev cmake swig libaio-dev libssl-dev libncurses5-dev libboost-dev antlr4 pkg-config libx11-dev libpcre3-dev libantlr4-runtime-dev
 # libgtk-3-dev libgtkmm-3.0-dev libsecret-1-dev python-dev libxml2-dev libvsqlitepp-dev libssh-dev unixodbc-dev
-# libzip-dev imagemagick libgdal-dev
+# libzip-dev imagemagick libgdal-dev bison doxygen libtirpc-dev libsasl2-dev
 
 # RUN DEPS
 # libproj12
@@ -130,8 +130,9 @@ build_connector(){
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DINSTALL_LIB_DIR=lib \
-		-DMYSQL_DIR="${srcdir}/install-bundle/" \
+		-DWITH_MYSQL="${srcdir}/install-bundle/" \
 		-DMYSQL_CONFIG_EXECUTABLE="${srcdir}/install-bundle/usr/bin/mysql_config" \
+		-DWITH_BOOST="${srcdir}/boost_${_boost_version//./_}"
 		-DWITH_JDBC=ON
 	echo "Build mysql-connector-c++..."
 	make
