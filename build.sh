@@ -23,7 +23,7 @@ DEFAULT_CHROOT_CORES=2
 
 
 # BUILD DEPS
-builddeps="build-essential debhelper autoconf autogen cmake unzip uuid-dev swig libaio-dev \
+builddeps="build-essential debhelper autoconf wget autogen cmake unzip uuid-dev swig libaio-dev \
 	libssl-dev libncurses5-dev libboost-dev antlr4 pkg-config libx11-dev libpcre3-dev \
 	libantlr4-runtime-dev libgtk-3-dev libgtkmm-3.0-dev libsecret-1-dev python-dev libxml2-dev \
         libvsqlitepp-dev libssh-dev unixodbc-dev libzip-dev imagemagick libgdal-dev \
