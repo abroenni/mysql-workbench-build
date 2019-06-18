@@ -1,4 +1,11 @@
-mysql-workbench-community (8.0.16-1debian9) unstable; urgency=medium
+mysql-workbench (8.0.16-1debian9.1) UNRELEASED; urgency=medium
+
+  * Non-maintainer upload.
+  * New build
+
+ -- root <root@debian-vm.fritz.box>  Tue, 18 Jun 2019 18:14:30 +0800
+
+mysql-workbench (8.0.16-1debian9) unstable; urgency=medium
 
   * New release
 

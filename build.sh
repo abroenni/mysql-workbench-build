@@ -3,7 +3,7 @@
 build_dir=mysql-bench
 pkgname=mysql-workbench
 pkgver=8.0.16
-pkgrel=2
+pkgrel=3
 _mysql_version=${pkgver}
 _connector_version=${pkgver}
 _gdal_version=2.4.1
@@ -11,10 +11,11 @@ _boost_version=1.69.0
 _antlr_version=4.7.2
 
 src_dir=`pwd`
-debian_dir=${src_dir}/DEBIAN
+debianin_dir=${src_dir}/debian.in
+debian_dir=${src_dir}/debian
 build_root=${src_dir}/${build_dir}
 srcdir=${build_root}
-pkgdir=${src_dir}/${pkgname}_${pkgver}+dfsg-${pkgrel}
+pkgdir=${debian_dir}/${pkgname}
 build_root_backup=${src_dir}/${build_dir}_backup
 
 # Finding number if cores on system
@@ -27,21 +28,13 @@ builddeps="build-essential debhelper autoconf wget autogen cmake unzip uuid-dev 
 	libssl-dev libncurses5-dev libboost-dev antlr4 pkg-config libx11-dev libpcre3-dev \
 	libantlr4-runtime-dev libgtk-3-dev libgtkmm-3.0-dev libsecret-1-dev python-dev libxml2-dev \
         libvsqlitepp-dev libssh-dev unixodbc-dev libzip-dev imagemagick libgdal-dev \
-        bison doxygen libtirpc-dev libsasl2-dev libsqlite3-dev libgl1-mesa-dev xdg-utils libproj-dev \
-	libxml2-utils"
+        bison doxygen libtirpc-dev libsasl2-dev libproj-dev libxml2-utils"
 
-# RUN DEPS
-# libproj12
-#makedepends=('cmake' 'boost' 'mesa' 'swig' 'java-runtime' 'imagemagick' 'antlr4')
-
-source_urls=(
-	     "https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-community-${pkgver}-src.tar.gz"
+source_urls=("https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-community-${pkgver}-src.tar.gz"
 	     "https://cdn.mysql.com/Downloads/MySQL-${_mysql_version%.*}/mysql-${_mysql_version}.tar.gz"
 	     "https://cdn.mysql.com/Downloads/Connector-C++/mysql-connector-c++-${_connector_version}-src.tar.gz"
 	     "https://www.antlr.org/download/antlr-${_antlr_version}-complete.jar"
-	     "https://downloads.sourceforge.net/project/boost/boost/${_boost_version}/boost_${_boost_version//./_}.tar.bz2"
-   	     "https://git.archlinux.org/svntogit/community.git/plain/trunk/0001-mysql-workbench-no-check-for-updates.patch?h=packages/mysql-workbench"
-	     "https://git.archlinux.org/svntogit/community.git/plain/trunk/0002-disable-unsupported-operating-system-warning.patch?h=packages/mysql-workbench")
+	     "https://downloads.sourceforge.net/project/boost/boost/${_boost_version}/boost_${_boost_version//./_}.tar.bz2")
 
 root_check(){
 	if ! [ $(id -u) = 0 ]; then
@@ -53,7 +46,7 @@ root_check(){
 chroot_check(){
 	rootinode=`stat -c %i /`
 	localegen=en_US.UTF-8
-	if ! [[ "${rootinote}" = "2" ]]; then
+	if [[ "${rootinode}" != "2" ]]; then
 		echo "Chroot environment detected. Configuring Chroot for build.."
 		export LANGUAGE=${localegen}
 		export LANG=${localegen}
@@ -74,6 +67,11 @@ install_builddep(){
 }
 
 get(){
+	if [ ! -d ${debian_dir} ]; then
+		cp -r ${debianin_dir} ${debian_dir}
+	fi
+
+
 	if [ ! -d ${build_root} ]; then
 		if [ ! -d ${build_root_backup} ]; then
 
@@ -82,12 +80,6 @@ get(){
 			for url in "${source_urls[@]}"; do
 				wget -q --show-progress "${url}" -P ${build_root};
 			done;
-
-			# Just renaming these patch files
-			cd ${build_root}
-			cp "0001-mysql-workbench-no-check-for-updates.patch?h=packages%2Fmysql-workbench" "${debian_dir}/patches/0001-mysql-workbench-no-check-for-updates.patch"
-			cp "0002-disable-unsupported-operating-system-warning.patch?h=packages%2Fmysql-workbench" "${debian_dir}/patches/0002-disable-unsupported-operating-system-warning.patch"
-
 
 			echo "Creating build dir backup ...";
 			cp -r ${build_root} ${build_root_backup};
@@ -207,10 +199,6 @@ build_all(){
 }
 
 prepare_deb(){
-	# Create base deb package folder structure
-	echo "Create base deb package folder structure.."
-	mkdir -p ${pkgdir}
-
 	# install bundled libraries
 	for LIBRARY in $(find "${srcdir}/install-bundle/usr/lib/" -type f -regex '.*/lib\(gdal\|mysql\(client\|cppconn\)\)\.so\..*'); do
 		BASENAME="$(basename "${LIBRARY}")"
@@ -238,21 +226,20 @@ prepare_deb(){
 }
 
 create_deb(){
-
-	#Copying DEBIAN folder into packaging folder
-	cp -r ${debian_dir} ${pkgdir}
-
-	# Setting the correct versions in debian control file
-	sed -i "s/__pkg_version__+dfsg-__pkgrel__/${pkgver}+dfsg-${pkgrel}/g" ${pkgdir}/DEBIAN/control
-
-	# deleting the patches folder
-        rm -r ${pkgdir}/DEBIAN/patches
-
 	# changing the user to root on all files
 	chown -R root:root ${pkgdir}
 
-	echo "Creating DEB file.."
-	dpkg -b ${pkgdir} ${src_dir}/${pkgname}_${pkgver}+dfsg-${pkgrel}_amd64.deb
+	cd ${src_dir}
+	dh_lintian
+	dh_strip
+	dh_compress --exclude=.mwb
+	dh_fixperms -X*.sh
+	dh_makeshlibs
+	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info \
+		-lusr/lib/mysql-workbench/:usr/lib/mysql-workbench/plugins:usr/lib/mysql-workbench/modules
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
 
 	echo "All done."
 }
@@ -268,12 +255,6 @@ clean(){
 		echo "Removing old packaging dir.."
 		rm -r ${pkgdir};
 	fi
-
-	if [ -f ${src_dir}/${pkgname}_${pkgver}+dfsg-${pkgrel}_amd64.deb ]; then
-                echo "Removing old DEB Package..."
-                rm ${src_dir}/${pkgname}_${pkgver}+dfsg-${pkgrel}_amd64.deb;
-        fi
-
 }
 
 clear
