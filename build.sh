@@ -19,6 +19,8 @@ build_root_backup=${src_dir}/${build_dir}_backup
 
 # Finding number if cores on system
 NB_CORES=$(grep -c '^processor' /proc/cpuinfo)
+DEFAULT_CHROOT_CORES=2
+
 
 # BUILD DEPS
 builddeps="build-essential debhelper autoconf autogen cmake unzip uuid-dev swig libaio-dev \
@@ -44,8 +46,27 @@ source_urls=(
 root_check(){
 	if ! [ $(id -u) = 0 ]; then
   		 echo "This build script must be run as root!"
-   	exit 1
-fi
+   		exit 1
+	fi
+}
+
+chroot_check(){
+	rootinode=`stat -c %i /`
+	localegen=en_US.UTF-8
+	if ! [[ "${rootinote}" = "2" ]]; then
+		echo "Chroot environment detected. Configuring Chroot for build.."
+		export LANGUAGE=${localegen}
+		export LANG=${localegen}
+		export LC_ALL=${localegen}
+		locale-gen ${localegen}
+
+		if [[ "${NB_CORES}" = "" ]]; then
+			echo "Hard setting build cpu cores to ${DEFAULT_CHROOT_CORES}"
+			echo "You propably forgot to mount your host system's /proc /sys and /dev folders"
+			NB_CORES=${DEFAULT_CHROOT_CORES}
+		fi
+
+	fi
 }
 
 install_builddep(){
@@ -257,6 +278,7 @@ clean(){
 
 clear
 root_check
+chroot_check
 clean
 install_builddep
 get
