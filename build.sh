@@ -11,7 +11,7 @@ _boost_version=1.69.0
 _antlr_version=4.7.2
 
 src_dir=`pwd`
-debianin_dir=${src_dir}/debian.in
+debianin_dir=${src_dir}/debian.orig
 debian_dir=${src_dir}/debian
 build_root=${src_dir}/${build_dir}
 srcdir=${build_root}
@@ -230,7 +230,12 @@ create_deb(){
 	chown -R root:root ${pkgdir}
 
 	cd ${src_dir}
+	dh_testdir
+	dh_testroot
 	dh_lintian
+	dh_installman
+	dh_installchangelogs
+	dh_installdocs
 	dh_strip
 	dh_compress --exclude=.mwb
 	dh_fixperms -X*.sh
@@ -258,14 +263,14 @@ clean(){
 }
 
 clear
-root_check
-chroot_check
-clean
-install_builddep
-get
-unpack
-prepare
-build_all
+#root_check
+#chroot_check
+#clean
+#install_builddep
+#get
+#unpack
+#prepare
+#build_all
 prepare_deb
 create_deb
 exit
