@@ -23,11 +23,11 @@ DEFAULT_CHROOT_CORES=2
 
 
 # BUILD DEPS
-builddeps="build-essential debhelper autoconf wget autogen cmake unzip uuid-dev swig libaio-dev \
-	libssl-dev libncurses5-dev libboost-dev antlr4 pkg-config libx11-dev libpcre3-dev \
-	libantlr4-runtime-dev libgtk-3-dev libgtkmm-3.0-dev libsecret-1-dev python-dev libxml2-dev \
-        libvsqlitepp-dev libssh-dev unixodbc-dev libzip-dev imagemagick libgdal-dev \
-        bison doxygen libtirpc-dev libsasl2-dev libproj-dev libxml2-utils"
+builddeps=("build-essential" "debhelper" "autoconf" "wget" "autogen" "cmake" "unzip" "uuid-dev" "swig" "libaio-dev"
+	"libssl-dev" "libncurses5-dev" "libboost-dev" "antlr4" "pkg-config" "libx11-dev" "libpcre3-dev"
+	"libantlr4-runtime-dev" "libgtk-3-dev" "libgtkmm-3.0-dev" "libsecret-1-dev" "python-dev" "libxml2-dev"
+        "libvsqlitepp-dev" "libssh-dev" "unixodbc-dev" "libzip-dev" "imagemagick" "libgdal-dev"
+        "bison" "doxygen" "libtirpc-dev" "libsasl2-dev" "libproj-dev" "libxml2-utils")
 
 source_urls=("https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-community-${pkgver}-src.tar.gz"
 	     "https://cdn.mysql.com/Downloads/MySQL-${_mysql_version%.*}/mysql-${_mysql_version}.tar.gz"
@@ -62,7 +62,21 @@ chroot_check(){
 }
 
 install_builddep(){
-	dpkg-query -l ${builddeps} > /dev/null || apt install ${builddeps}
+	instdebs=()
+
+	for deb in "${builddeps[@]}"; do
+        	dpkg -s ${deb} > /dev/null 2>&1
+        	err=$?
+        	# 1 not installed, 0 is installed
+        	if [ ${err} -eq 1 ]; then
+                	echo "[ ] Package ${deb} NOT installed"
+                	instdebs=("${instdebs[@]}" "${deb}")
+        	else
+                	echo "[ii] Package ${deb} found"
+        	fi
+	done
+	# install the build dependencies
+	apt install ${instdebs[@]}
 }
 
 get(){
