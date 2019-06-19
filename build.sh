@@ -265,9 +265,15 @@ create_deb(){
 clean(){
 
 	if [ -d ${build_root} ]; then
-		echo "Cleaning up old stuff..."
+		echo "Cleaning up build dir..."
 		rm -r ${build_root};
 	fi
+
+	if [ -d ${debian_dir} ]; then
+                echo "Cleaning up old debian dir..."
+                rm -r ${debian_dir};
+        fi
+
 
 	if [ -d ${pkgdir} ]; then
 		echo "Removing old packaging dir.."
