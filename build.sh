@@ -3,7 +3,6 @@
 build_dir=mysql-bench
 pkgname=mysql-workbench
 pkgver=8.0.16
-pkgrel=3
 _mysql_version=${pkgver}
 _connector_version=${pkgver}
 _gdal_version=2.4.1
@@ -106,7 +105,7 @@ prepare(){
 	cd "${build_root}/mysql-workbench-community-${pkgver}-src/"
 
 	# Disable 'Help' -> 'Check for Updates'
-	# Updates are provided via Arch Linux packages
+	# Updates are provided via Debian Linux packages
 	patch -Np1 < "${debian_dir}"/patches/0001-mysql-workbench-no-check-for-updates.patch
 
 	# disable unsupported operating system warning
@@ -263,14 +262,14 @@ clean(){
 }
 
 clear
-#root_check
-#chroot_check
-#clean
-#install_builddep
-#get
-#unpack
-#prepare
-#build_all
+root_check
+chroot_check
+clean
+install_builddep
+get
+unpack
+prepare
+build_all
 prepare_deb
 create_deb
 exit
