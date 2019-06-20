@@ -1,6 +1,6 @@
-# mysql-workbench
+# How to compile MySQL-Workbench from source on Debian Testing
 
-Build script for compiling MySql-Workbench 8 from source on Debian Testing
+This is a build script for compiling MySql-Workbench 8 from source on Debian Testing
 
 ## Background and info
 The package mysql-workbench version 6 was removed from the Debian testing repos because of a build dependency issue with gdal in late 2018. In the meantime, mysql-workbench 8 has been released and upon reading messages on oracle forums, the build issues have been solved. A new build with mysql-workbench version 8 on debian testing (2019.6) worked.
