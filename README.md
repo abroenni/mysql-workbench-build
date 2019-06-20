@@ -32,4 +32,4 @@ Now you can build the DEB package with the steps given above. When done, you nee
 # umount chroot_testing/proc/ chroot_testing/sys/ chroot_testing/dev/
 # rm -rf ./chroot_testing/
 ```
-Now you can install you DEB package.
+Now you can install the DEB package.
