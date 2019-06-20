@@ -22,7 +22,7 @@ Section: database
 Priority: optional
 Homepage: http://dev.mysql.com/workbench/
 Description: MySQL Workbench - a visual database modeling, administration and queuing tool
- MySQL Workbench is a modeling tool that allow to design
+ MySQL Workbench is a modeling tool that allows one to design
  and generate MySQL databases graphically. It also has administration
  and query development modules where you can manage MySQL server instances
  and execute SQL queries.
