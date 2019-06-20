@@ -1,15 +1,9 @@
-mysql-workbench (8.0.16-1debian9.1) UNRELEASED; urgency=medium
+mysql-workbench (8.0.16-1debian10) unstable; urgency=medium
 
-  * Non-maintainer upload.
-  * New build
+  * New upstream release
+  * Non-maintainer release
 
- -- root <root@debian-vm.fritz.box>  Tue, 18 Jun 2019 18:14:30 +0800
-
-mysql-workbench (8.0.16-1debian9) unstable; urgency=medium
-
-  * New release
-
- -- Andreas Brönnimann <abronnim@our.ecu.edu.au>  Mon, 10 Jun 2019 22:33:00 +0800
+ -- Andreas Brönnimann <abronnim@our.ecu.edu.au>  Thu, 20 Jun 2019 22:33:00 +0800
 
 mysql-workbench (6.3.10+dfsg-3) unstable; urgency=medium
 
