@@ -17,8 +17,8 @@ Create a build folder for development in your root home folder. Change into the 
 ```
 # mkdir ~/build && cd ~/build
 # git clone [this repo]
-# cd mysql-workbench
-# ./build
+# cd mysql-workbench-build
+# ./build.sh
 ```
 
 ## Optional: Setting up a chroot for the build
