@@ -1,3 +1,15 @@
+mysql-workbench (8.0.18-1debian11) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * New upstream release 8.0.18
+  * Build-Depends:
+    + rapidjson-dev
+    - boost-1.69
+    + boost-1.70
+  * Standards-Version: 4.4.0
+
+ -- Andreas Brönnimann <abronnim@our.ecu.edu.au>  Thu, 14 Nov 2019 13:28:25 +0800
+
 mysql-workbench (8.0.16-1debian10) unstable; urgency=medium
 
   * New upstream release
