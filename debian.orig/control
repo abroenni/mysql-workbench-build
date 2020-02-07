@@ -15,7 +15,7 @@ Vcs-Git: https://salsa.debian.org/debian/mysql-workbench.git
 
 Package: mysql-workbench
 Architecture: amd64
-Depends: ${shlibs:Depends}, ${misc:Depends}, libproj13, libsecret-1-0, python-paramiko, python-pexpect, python-pysqlite2
+Depends: ${shlibs:Depends}, ${misc:Depends}, libglib2.0-0 (>= 2.28), libsecret-1-0, libproj15
 Recommends: ttf-bitstream-vera
 Suggests: python-pyodbc (>= 2.1.8)
 Section: database
