@@ -1,3 +1,16 @@
+mysql-workbench (8.0.19-1debian11) UNRELEASED; urgency=medium
+
+  * Non-maintainer upload.
+  * New upstream release 8.0.19
+  * Build-Depends:
+    - antlr-4.7.2
+    + antlr-4.8
+    - gdal-2.4.1
+    + gdal-3.0.4
+  * Changed boost source url to bintray
+
+ -- Andreas Brönnimann <abronnim@our.ecu.edu.au>  Fri, 07 Feb 2020 18:21:24 +0800
+
 mysql-workbench (8.0.18-1debian11) unstable; urgency=medium
 
   * Non-maintainer upload.

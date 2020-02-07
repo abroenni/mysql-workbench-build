@@ -1,0 +1,5 @@
+# Folder created during build
+debian/
+mysql-bench/
+mysql-bench_backup/
+

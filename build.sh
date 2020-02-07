@@ -2,12 +2,12 @@
 
 build_dir=mysql-bench
 pkgname=mysql-workbench
-pkgver=8.0.18
+pkgver=8.0.19
 _mysql_version=${pkgver}
 _connector_version=${pkgver}
-_gdal_version=2.4.1
+_gdal_version=3.0.4
 _boost_version=1.70.0
-_antlr_version=4.7.2
+_antlr_version=4.8
 
 src_dir=`pwd`
 debianin_dir=${src_dir}/debian.orig
@@ -33,7 +33,7 @@ source_urls=("https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-
 	     "https://cdn.mysql.com/Downloads/MySQL-${_mysql_version%.*}/mysql-${_mysql_version}.tar.gz"
 	     "https://cdn.mysql.com/Downloads/Connector-C++/mysql-connector-c++-${_connector_version}-src.tar.gz"
 	     "https://www.antlr.org/download/antlr-${_antlr_version}-complete.jar"
-	     "https://downloads.sourceforge.net/project/boost/boost/${_boost_version}/boost_${_boost_version//./_}.tar.bz2")
+	     "https://dl.bintray.com/boostorg/release/${_boost_version}/source/boost_${_boost_version//./_}.tar.bz2")
 
 root_check(){
 	if ! [ $(id -u) = 0 ]; then
